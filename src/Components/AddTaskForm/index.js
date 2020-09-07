@@ -52,9 +52,7 @@ export const AddTaskForm = () => {
         <TextField
           id="date"
           label="Deadline"
-          type="date"
-          defaultValue="2017-05-24"
-          // className={classes.textField}
+          type="datetime-local"
           InputLabelProps={{
             shrink: true,
           }}

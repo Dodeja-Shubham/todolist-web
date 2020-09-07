@@ -27,6 +27,7 @@ function App() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState("upcoming");
+  const [category, setCategory] = useState("All");
 
   const handleModal = () => {
     setOpen(!open);
@@ -36,11 +37,11 @@ function App() {
     <div className="App">
       <Header />
       <TabsContainer setPanel={setPanel} />
-      <Selector />
+      <Selector setCategory={setCategory} />
       <Modal open={open} onClose={handleModal} className={classes.modal}>
         <AddTaskForm />
       </Modal>
-      <Panels index={panel} />
+      <Panels index={panel} category={category} />
       <Fab
         color="primary"
         aria-label="add"

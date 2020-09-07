@@ -27,6 +27,7 @@ export const Selector = (props) => {
 
   const handleChange = (event) => {
     setCategory(event.target.value);
+    props.setCategory(event.target.value);
   };
 
   return (
