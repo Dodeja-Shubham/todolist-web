@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     display: "flex",
     margin: theme.spacing(1),
+    padding: theme.spacing(1),
     justifyContent: "space-between",
   },
   selectEmpty: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Selector = () => {
+export const Selector = (props) => {
   const classes = useStyles();
   const [category, setCategory] = useState("All");
   const [categoryList] = useState(["Shopping", "Studies", "Project", "Garden"]);
@@ -29,7 +30,7 @@ export const Selector = () => {
   };
 
   return (
-    <Paper square>
+    <Paper square elevation={props.elevation}>
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-simple-select-label">Category</InputLabel>
         <Select
