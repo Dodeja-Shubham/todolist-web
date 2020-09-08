@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Fab, makeStyles, Modal } from "@material-ui/core";
+import { Fab, makeStyles, Modal, Box } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { Header } from "./Components/Header";
 import { TabsContainer } from "./Components/Tabs";
 import { Selector } from "./Components/Selectors";
 import { AddTaskForm } from "./Components/AddTaskForm";
 import { Panels } from "./Components/Panels";
+import { UserForm } from "./Components/Homepage";
 
 const useStyles = makeStyles((theme) => ({
   fabBtn: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const [loggedIn, setLoggedIn] = useState(false);
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState("All");
   const [category, setCategory] = useState("All");
@@ -104,34 +106,39 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <TabsContainer setPanel={setPanel} />
-      <Selector
-        setCategory={setCategory}
-        setFormType={(type) => {
-          setFormType(type);
-          setOpen(true);
-        }}
-      />
-      <Modal open={open} onClose={handleModal} className={classes.modal}>
-        <AddTaskForm
-          addTasks={(data) => {
-            if (formType !== "cat") setTasks([...tasks, data]);
-            else setFormType(data.category);
-            setOpen(false);
-          }}
-          type={formType}
-        />
-      </Modal>
-      <Panels index={panel} category={category} tasks={tasks} />
-      <Fab
-        color="primary"
-        aria-label="add"
-        className={classes.fabBtn}
-        variant={window.innerWidth <= 500 ? "round" : "extended"}
-        onClick={handleModal}
-      >
-        <Add /> {window.innerWidth > 500 && "Add Task"}
-      </Fab>
+      {loggedIn && (
+        <Box>
+          <TabsContainer setPanel={setPanel} />
+          <Selector
+            setCategory={setCategory}
+            setFormType={(type) => {
+              setFormType(type);
+              setOpen(true);
+            }}
+          />
+          <Modal open={open} onClose={handleModal} className={classes.modal}>
+            <AddTaskForm
+              addTasks={(data) => {
+                if (formType !== "cat") setTasks([...tasks, data]);
+                else setFormType(data.category);
+                setOpen(false);
+              }}
+              type={formType}
+            />
+          </Modal>
+          <Panels index={panel} category={category} tasks={tasks} />
+          <Fab
+            color="primary"
+            aria-label="add"
+            className={classes.fabBtn}
+            variant={window.innerWidth <= 500 ? "round" : "extended"}
+            onClick={handleModal}
+          >
+            <Add /> {window.innerWidth > 500 && "Add Task"}
+          </Fab>
+        </Box>
+      )}
+      {!loggedIn && <UserForm setLoggedIn={setLoggedIn} />}
     </div>
   );
 }

@@ -6,32 +6,22 @@ import {
   InputLabel,
   makeStyles,
   FormControl,
-  Button,
-  Box,
 } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
+    display: "flex",
     alignContent: "center",
     padding: theme.spacing(1),
   },
   formControl: {
     display: "flex",
+    width: "100%",
     margin: theme.spacing(1),
     justifyContent: "space-between",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
-  },
-  btnContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btn: {
-    height: "40px",
-    width: "30px",
   },
 }));
 
@@ -51,8 +41,7 @@ export const Selector = (props) => {
       elevation={props.elevation}
       className={classes.paper}
       style={{
-        display: props.form ? "block" : "grid",
-        gridTemplateColumns: props.form ? "1fr" : "3fr 1fr",
+        display: "flex",
       }}
     >
       <FormControl className={classes.formControl}>
@@ -71,18 +60,6 @@ export const Selector = (props) => {
           ))}
         </Select>
       </FormControl>
-      {!props.form && (
-        <Box className={classes.btnContainer}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.btn}
-            onClick={() => props.setFormType("cat")}
-          >
-            <Add />
-          </Button>
-        </Box>
-      )}
     </Paper>
   );
 };
