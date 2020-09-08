@@ -13,9 +13,22 @@ export const TabsContainer = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    props.setPanel(
-      newValue === 0 ? "upcoming" : newValue === 1 ? "completed" : "missed"
-    );
+    switch (newValue) {
+      case 0:
+        props.setPanel("All");
+        break;
+      case 1:
+        props.setPanel("Active");
+        break;
+      case 2:
+        props.setPanel("Done");
+        break;
+      case 3:
+        props.setPanel("Missed");
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -28,9 +41,10 @@ export const TabsContainer = (props) => {
         onChange={handleChange}
         aria-label="disabled tabs example"
       >
-        <Tab label="Upcoming" {...a11yProps(0)} />
-        <Tab label="Completed" {...a11yProps(1)} />
-        <Tab label="Missed" {...a11yProps(2)} />
+        <Tab label="All" {...a11yProps(0)} />
+        <Tab label="Active" {...a11yProps(1)} />
+        <Tab label="Done" {...a11yProps(2)} />
+        <Tab label="Missed" {...a11yProps(3)} />
       </Tabs>
     </Paper>
   );

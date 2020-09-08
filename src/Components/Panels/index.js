@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Card,
@@ -10,7 +10,12 @@ import {
 import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
+  taskList: {
+    maxHeight: window.innerWidth <= 500 ? "75vh" : "80vh",
+    overflowY: "scroll",
+  },
   cardContainer: {
+    borderTop: "2px solid",
     margin: theme.spacing(2),
   },
   card: {
@@ -21,58 +26,27 @@ const useStyles = makeStyles((theme) => ({
 
 export const Panels = (props) => {
   const classes = useStyles();
-  const [tasks] = useState([
-    {
-      title: "Expired",
-      desc: "Do the complete maths homework",
-      deadline: "2020-09-06T04:15",
-      category: "Studies",
-      completed: false,
-    },
-    {
-      title: "Do homework",
-      desc: "Do the complete maths homework",
-      deadline: "2020-09-20T04:15",
-      category: "Studies",
-      completed: false,
-    },
-    {
-      title: "Expired",
-      desc: "Do the complete maths homework",
-      deadline: "2020-09-06T04:15",
-      category: "Studies",
-      completed: true,
-    },
-    {
-      title: "Repair Phone",
-      desc: "Do the complete maths homework",
-      deadline: "2020-09-18T04:15",
-      category: "Shopping",
-      completed: false,
-    },
-    {
-      title: "Do homework",
-      desc: "Do the complete maths homework",
-      deadline: "2020-09-22T04:15",
-      category: "Studies",
-      completed: false,
-    },
-  ]);
 
   return (
-    <Box>
-      {tasks.map((task, index) => {
+    <Box className={classes.taskList}>
+      {props.tasks.map((task, index) => {
         if (
-          ((props.index === "upcoming" &&
+          (props.index === "Active" &&
             !task.completed &&
             moment(task.deadline).diff(moment().format()) >= 0) ||
-            (props.index === "completed" && task.completed) ||
-            (props.index === "missed" &&
-              moment(task.deadline).diff(moment().format()) < 0)) &&
-          (props.category === "All" || task.category === props.category)
+          (props.index === "Done" && task.completed) ||
+          (props.index === "Missed" &&
+            moment(task.deadline).diff(moment().format()) < 0) ||
+          (props.index === "All" &&
+            (props.category === "All" || task.category === props.category))
         )
           return (
-            <Card key={index} className={classes.cardContainer} elevation={3}>
+            <Card
+              key={index}
+              className={classes.cardContainer}
+              elevation={3}
+              style={{ borderColor: task.color }}
+            >
               <CardContent className={classes.card}>
                 <Checkbox
                   checked={task.completed}
