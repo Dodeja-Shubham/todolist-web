@@ -35,8 +35,8 @@ export const TabsContainer = (props) => {
     <Paper square>
       <Tabs
         value={value}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor="secondary"
+        textColor="secondary"
         variant="fullWidth"
         onChange={handleChange}
         aria-label="disabled tabs example"

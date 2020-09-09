@@ -4,6 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import { Button } from "@material-ui/core";
 import { ListAlt } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Header = () => {
+export const Header = (props) => {
   const classes = useStyles();
 
   return (
@@ -35,6 +36,11 @@ export const Header = () => {
         <Typography variant="h6" className={classes.title}>
           Todo
         </Typography>
+        {props.loggedIn && (
+          <Button color="secondary" onClick={props.logout}>
+            Logout
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

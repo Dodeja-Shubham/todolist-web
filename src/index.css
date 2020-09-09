@@ -9,6 +9,7 @@ body {
 
 * {
   scrollbar-width: none;
+  outline: none;
 }
 
 *::-webkit-scrollbar {

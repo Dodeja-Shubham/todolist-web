@@ -5,7 +5,9 @@ import {
   TextField,
   makeStyles,
   Button,
+  Snackbar,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import { Selector } from "../Selectors";
 import moment from "moment";
 
@@ -47,8 +49,17 @@ export const AddTaskForm = (props) => {
     setForm({ ...temp });
   };
 
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
   return (
     <Paper className={classes.formContainer}>
+      <Snackbar>
+        <Alert severity="info" color="warning">
+          Please fill the field marked with *
+        </Alert>
+      </Snackbar>
       <Typography variant="h5">Add Task</Typography>
       <form className={classes.form}>
         <div className={classes.form}>
@@ -59,7 +70,7 @@ export const AddTaskForm = (props) => {
             placeholder="Task Title"
             onChange={handleChange}
             name="title"
-            helperText={props.currTask&&props.currTask.title}
+            helperText={props.currTask && props.currTask.title}
           />
           <TextField
             required
@@ -70,12 +81,13 @@ export const AddTaskForm = (props) => {
             placeholder="Task Description"
             onChange={handleChange}
             name="desc"
-            helperText={props.currTask&&props.currTask.desc}
+            helperText={props.currTask && props.currTask.desc}
           />
           <div className={classes.input}>
             <Selector elevation={0} setCategory={handleCategory} form />
           </div>
           <TextField
+            required
             id="date"
             label="Deadline"
             type="datetime-local"
@@ -85,16 +97,17 @@ export const AddTaskForm = (props) => {
             className={classes.input}
             onChange={handleChange}
             name="due_date"
-            helperText={props.currTask&&props.currTask.due_date}
+            helperText={props.currTask && props.currTask.due_date}
           />
           <TextField
+            required
             id="color"
             label="Color"
             type="color"
             className={classes.input}
             onChange={handleChange}
             name="colour"
-            defaultValue={props.currTask&&props.currTask.colour}
+            defaultValue={props.currTask && props.currTask.colour}
           />{" "}
         </div>
         <Button

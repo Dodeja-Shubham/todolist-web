@@ -6,7 +6,10 @@ import {
   Button,
   makeStyles,
   Typography,
+  Snackbar,
+  CircularProgress,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import { signUpAPI, logInAPI } from "../../API/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,11 +29,21 @@ const useStyles = makeStyles((theme) => ({
   txtField: {
     marginTop: theme.spacing(1),
   },
+  btn: {
+    position: "relative",
+    marginTop: theme.spacing(1),
+  },
+  loader: {
+    position: "absolute",
+    right: "10px",
+  },
 }));
 
 export const UserForm = (props) => {
   const [login, setLogin] = useState(false);
   const [data, setData] = useState({});
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
   const collapse = {
@@ -40,6 +53,10 @@ export const UserForm = (props) => {
     transition: "max-height 0.4s",
   };
 
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
   const handleChange = (e) => {
     let temp = data;
     temp[e.target.name] = e.target.value;
@@ -47,29 +64,47 @@ export const UserForm = (props) => {
   };
 
   const handleSubmit = () => {
+    setLoading(true);
     if (login) {
       logInAPI(data, (res, err) => {
-        if (!err && res) {
+        setLoading(false);
+        if (!err && res.data.key) {
           localStorage.setItem("xxkeyxx", res.data.key);
           props.setLoggedIn(true);
-        } else console.log(err);
+        } else {
+          setShow(true);
+        }
       });
     } else
       signUpAPI(data, (res, err) => {
-        if (!err && res) {
-          localStorage.setItem("xxkeyxx", res.data.key);
+        setLoading(false);
+        if (!err && res.data.token) {
+          localStorage.setItem("xxkeyxx", res.data.token);
           props.setLoggedIn(true);
+        } else {
+          setShow(true);
         }
       });
   };
 
   return (
     <Box className={classes.userFormContainer}>
+      <Snackbar
+        open={show}
+        autoHideDuration={3000}
+        onClose={() => {
+          setShow(false);
+        }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="info" color="warning">
+          Please fill the field marked with *
+        </Alert>
+      </Snackbar>
       <Paper className={classes.formBody} elevation={3}>
         <Typography variant="h6">{login ? "Log In" : "Sign Up"}</Typography>
         <TextField
           required
-          id="standard-required"
           label="username"
           placeholder="Add Username"
           onChange={handleChange}
@@ -77,7 +112,6 @@ export const UserForm = (props) => {
           className={classes.txtField}
         />
         <TextField
-          id="standard-required"
           label="Email"
           placeholder="Add Email"
           onChange={handleChange}
@@ -87,8 +121,8 @@ export const UserForm = (props) => {
           style={collapse}
         />
         <TextField
+          required
           type="password"
-          id="standard-required"
           label="Password"
           placeholder="Password"
           onChange={handleChange}
@@ -96,7 +130,7 @@ export const UserForm = (props) => {
           className={classes.txtField}
         />
         <TextField
-          id="standard-required"
+          required
           label="Confirm Password"
           placeholder="Confirm Password"
           onChange={handleChange}
@@ -108,10 +142,17 @@ export const UserForm = (props) => {
         <Button
           variant="contained"
           color="primary"
-          className={classes.txtField}
+          className={classes.btn}
           onClick={handleSubmit}
         >
           {login ? "Login" : "Sign up"}
+          {loading && (
+            <CircularProgress
+              color="secondary"
+              size="1.5rem"
+              className={classes.loader}
+            />
+          )}
         </Button>
         <Button color="secondary" onClick={() => setLogin(!login)}>
           {!login ? "Already" : "Don't"} have an account?
