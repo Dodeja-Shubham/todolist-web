@@ -28,7 +28,13 @@ const useStyles = makeStyles((theme) => ({
 export const Selector = (props) => {
   const classes = useStyles();
   const [category, setCategory] = useState("All");
-  const [categoryList] = useState(["Shopping", "Studies", "Project", "Garden"]);
+  const [categoryList] = useState([
+    "Home",
+    "Personal",
+    "Work",
+    "Fitness",
+    "Medication",
+  ]);
 
   const handleChange = (event) => {
     setCategory(event.target.value);

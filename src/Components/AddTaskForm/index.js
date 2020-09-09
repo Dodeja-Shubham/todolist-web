@@ -29,18 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const AddTaskForm = (props) => {
   const classes = useStyles();
-  const [form, setForm] = useState({
-    title: "",
-    desc: "",
-    deadline: "",
-    category: "",
-    color: "",
-  });
+  const [form, setForm] = useState({});
 
   const handleChange = (e) => {
     let temp = { ...form };
-    if (e.target.name === "deadline")
-      temp[e.target.name] = moment(e.target.value).format().toString();
+    if (e.target.name === "due_date")
+      temp[e.target.name] = moment(e.target.value)
+        .format("YYYY-MM-DD")
+        .toString();
     else temp[e.target.name] = e.target.value;
     setForm({ ...temp });
   };
@@ -63,6 +59,7 @@ export const AddTaskForm = (props) => {
             placeholder="Task Title"
             onChange={handleChange}
             name="title"
+            helperText={props.currTask&&props.currTask.title}
           />
           <TextField
             required
@@ -73,6 +70,7 @@ export const AddTaskForm = (props) => {
             placeholder="Task Description"
             onChange={handleChange}
             name="desc"
+            helperText={props.currTask&&props.currTask.desc}
           />
           <div className={classes.input}>
             <Selector elevation={0} setCategory={handleCategory} form />
@@ -86,7 +84,8 @@ export const AddTaskForm = (props) => {
             }}
             className={classes.input}
             onChange={handleChange}
-            name="deadline"
+            name="due_date"
+            helperText={props.currTask&&props.currTask.due_date}
           />
           <TextField
             id="color"
@@ -94,7 +93,8 @@ export const AddTaskForm = (props) => {
             type="color"
             className={classes.input}
             onChange={handleChange}
-            name="color"
+            name="colour"
+            defaultValue={props.currTask&&props.currTask.colour}
           />{" "}
         </div>
         <Button

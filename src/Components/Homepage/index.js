@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     padding: theme.spacing(2),
-    border: "2px solid #3F51B5",
+    border: `2px solid ${theme.palette.primary.light}`,
     width: "70%",
   },
   txtField: {
@@ -36,6 +36,7 @@ export const UserForm = (props) => {
   const collapse = {
     minWidth: "100%",
     maxHeight: login ? "0px" : "200px",
+    transform: `scaleY(${login ? 0 : 1})`,
     transition: "max-height 0.4s",
   };
 
@@ -43,21 +44,20 @@ export const UserForm = (props) => {
     let temp = data;
     temp[e.target.name] = e.target.value;
     setData({ ...temp });
-    console.log(temp);
   };
 
   const handleSubmit = () => {
     if (login) {
       logInAPI(data, (res, err) => {
         if (!err && res) {
-          console.log(res);
+          localStorage.setItem("xxkeyxx", res.data.key);
           props.setLoggedIn(true);
-        }
+        } else console.log(err);
       });
     } else
       signUpAPI(data, (res, err) => {
         if (!err && res) {
-          console.log(res);
+          localStorage.setItem("xxkeyxx", res.data.key);
           props.setLoggedIn(true);
         }
       });
@@ -82,7 +82,9 @@ export const UserForm = (props) => {
           placeholder="Add Email"
           onChange={handleChange}
           name="email"
+          disabled={login}
           className={classes.txtField}
+          style={collapse}
         />
         <TextField
           type="password"
@@ -90,7 +92,7 @@ export const UserForm = (props) => {
           label="Password"
           placeholder="Password"
           onChange={handleChange}
-          name={login ? "password" : "password1"}
+          name="password"
           className={classes.txtField}
         />
         <TextField
@@ -100,6 +102,7 @@ export const UserForm = (props) => {
           onChange={handleChange}
           name="password2"
           className={classes.txtField}
+          disabled={login}
           style={collapse}
         />
         <Button
