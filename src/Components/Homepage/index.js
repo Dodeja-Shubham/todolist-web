@@ -66,6 +66,8 @@ export const UserForm = (props) => {
   const handleSubmit = () => {
     setLoading(true);
     if (login) {
+      delete data.email;
+      delete data.password2;
       logInAPI(data, (res, err) => {
         setLoading(false);
         if (!err && res.data.key) {
