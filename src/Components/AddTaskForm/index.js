@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
+  titleText: {
+    textAlign: "center",
+    letterSpacing: "1px",
+    marginTop: theme.spacing(1),
+  },
 }));
 
 export const AddTaskForm = (props) => {
@@ -55,12 +60,14 @@ export const AddTaskForm = (props) => {
 
   return (
     <Paper className={classes.formContainer}>
-      <Snackbar>
+      <Snackbar open={false}>
         <Alert severity="info" color="warning">
           Please fill the field marked with *
         </Alert>
       </Snackbar>
-      <Typography variant="h5">Add Task</Typography>
+      <Typography variant="h6" className={classes.titleText}>
+        Add Task
+      </Typography>
       <form className={classes.form}>
         <div className={classes.form}>
           <TextField
@@ -71,6 +78,9 @@ export const AddTaskForm = (props) => {
             onChange={handleChange}
             name="title"
             helperText={props.currTask && props.currTask.title}
+            inputProps={{
+              autoComplete: "off",
+            }}
           />
           <TextField
             required
@@ -82,6 +92,9 @@ export const AddTaskForm = (props) => {
             onChange={handleChange}
             name="desc"
             helperText={props.currTask && props.currTask.desc}
+            inputProps={{
+              autoComplete: "off",
+            }}
           />
           <div className={classes.input}>
             <Selector elevation={0} setCategory={handleCategory} form />
@@ -93,6 +106,7 @@ export const AddTaskForm = (props) => {
             type="datetime-local"
             InputLabelProps={{
               shrink: true,
+              autoComplete: "off",
             }}
             className={classes.input}
             onChange={handleChange}

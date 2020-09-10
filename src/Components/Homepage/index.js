@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { signUpAPI, logInAPI } from "../../API/user";
+import { getTasks } from "../../API/task";
 
 const useStyles = makeStyles((theme) => ({
   userFormContainer: {
@@ -72,6 +73,7 @@ export const UserForm = (props) => {
         setLoading(false);
         if (!err && res.data.key) {
           localStorage.setItem("xxkeyxx", res.data.key);
+          getTasks(null, props.cb);
           props.setLoggedIn(true);
         } else {
           setShow(true);
@@ -82,6 +84,7 @@ export const UserForm = (props) => {
         setLoading(false);
         if (!err && res.data.token) {
           localStorage.setItem("xxkeyxx", res.data.token);
+          getTasks(null, props.cb);
           props.setLoggedIn(true);
         } else {
           setShow(true);
@@ -112,6 +115,9 @@ export const UserForm = (props) => {
           onChange={handleChange}
           name="username"
           className={classes.txtField}
+          inputProps={{
+            autoComplete: "off",
+          }}
         />
         <TextField
           label="Email"
@@ -121,6 +127,9 @@ export const UserForm = (props) => {
           disabled={login}
           className={classes.txtField}
           style={collapse}
+          inputProps={{
+            autoComplete: "off",
+          }}
         />
         <TextField
           required
@@ -130,6 +139,9 @@ export const UserForm = (props) => {
           onChange={handleChange}
           name="password"
           className={classes.txtField}
+          inputProps={{
+            autoComplete: "off",
+          }}
         />
         <TextField
           required
@@ -140,6 +152,9 @@ export const UserForm = (props) => {
           className={classes.txtField}
           disabled={login}
           style={collapse}
+          inputProps={{
+            autoComplete: "off",
+          }}
         />
         <Button
           variant="contained"
