@@ -13,7 +13,6 @@ import {
 import moment from "moment";
 import { updateTask, getTasks } from "../../API/task";
 import { AddTaskForm } from "../AddTaskForm";
-import { motion, useAnimation } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   taskList: {
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const Panels = (props) => {
   const classes = useStyles();
-  const controls = useAnimation();
   const [curr, setCurr] = useState(0);
   const [show, setShow] = useState(false);
   const [empty, setEmpty] = useState(true);
@@ -67,46 +65,31 @@ export const Panels = (props) => {
         ) {
           if (empty) setEmpty(false);
           return (
-            <motion.div
-              style={{ width: "100%" }}
-              onDragEnd={() => {
-                let temp = { id: task.id };
-                temp.is_completed = !task.is_completed;
-                updateTask(temp, (res, err) => {
-                  getTasks(null, props.cb);
-                });
+            <Card
+              className={classes.cardContainer}
+              elevation={3}
+              style={{ borderColor: task.colour }}
+              onClick={() => {
+                setCurr(index);
+                setShow(true);
               }}
-              key={index}
-              drag="x"
-              dragDirectionLock
-              animate={controls}
             >
-              <Card
-                className={classes.cardContainer}
-                elevation={3}
-                style={{ borderColor: task.colour }}
-                onClick={() => {
-                  setCurr(index);
-                  setShow(true);
-                }}
-              >
-                <CardContent className={classes.card}>
-                  <Checkbox
-                    checked={task.is_completed}
-                    inputProps={{ "aria-label": "primary checkbox" }}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={(e) => {
-                      let temp = { id: task.id };
-                      temp.is_completed = e.target.checked;
-                      updateTask(temp, (res, err) => {
-                        getTasks(null, props.cb);
-                      });
-                    }}
-                  />
-                  <Typography>{task.title}</Typography>
-                </CardContent>
-              </Card>
-            </motion.div>
+              <CardContent className={classes.card}>
+                <Checkbox
+                  checked={task.is_completed}
+                  inputProps={{ "aria-label": "primary checkbox" }}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={(e) => {
+                    let temp = { id: task.id };
+                    temp.is_completed = e.target.checked;
+                    updateTask(temp, (res, err) => {
+                      getTasks(null, props.cb);
+                    });
+                  }}
+                />
+                <Typography>{task.title}</Typography>
+              </CardContent>
+            </Card>
           );
         } else return false;
       })}
@@ -124,11 +107,6 @@ export const Panels = (props) => {
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 Add a task from the + icon at the bottom.
-                <br />
-                <br />
-              </Typography>
-              <Typography variant="body2" color="secondary" component="p">
-                PS. You can swipe left or right on a task and see what happens!
               </Typography>
             </CardContent>
           </CardActionArea>
