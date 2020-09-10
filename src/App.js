@@ -88,10 +88,10 @@ function App() {
         category &&
         category.trim() !== ""
       )
-    )
-      return setShow(true);
-    setTasks([...tasks, data]);
-    setOpen(false);
+    ) {
+      setShow(true);
+      return true;
+    }
   };
 
   return (
@@ -128,8 +128,12 @@ function App() {
               {!loading ? (
                 <AddTaskForm
                   addTasks={(data) => {
-                    setShow(true);
-                    addTask(data, () => addTaskCB(data));
+                    if (!addTaskCB(data))
+                      addTask(data, () => {
+                        setTasks([...tasks, data]);
+                        getTasks(null, cb);
+                        setOpen(false);
+                      });
                   }}
                   type={formType}
                 />
@@ -149,7 +153,7 @@ function App() {
             </Fab>
           </Box>
         )}
-        {!loggedIn && <UserForm setLoggedIn={setLoggedIn} />}
+        {!loggedIn && <UserForm setLoggedIn={setLoggedIn} cb={cb} />}
       </div>
     </MuiThemeProvider>
   );

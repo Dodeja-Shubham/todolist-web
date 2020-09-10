@@ -38,7 +38,7 @@ export const Header = (props) => {
         </Typography>
         {props.loggedIn && (
           <Button color="secondary" onClick={props.logout}>
-            Logout
+            <strong>Logout</strong>
           </Button>
         )}
       </Toolbar>
