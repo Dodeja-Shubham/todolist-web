@@ -3,7 +3,7 @@ import { BASE_URL } from "../const";
 
 const auth = {
   headers: {
-    "X-CSRFToken": localStorage.getItem("xxkeyxx"),
+    Authorization: `Token ${localStorage.getItem("xxkeyxx")}`,
   },
 };
 
